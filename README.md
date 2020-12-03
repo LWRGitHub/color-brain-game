@@ -7,8 +7,8 @@
 - When the spelling of the 1st word Does NOT match the color of the 2nd word press "NO"
 
 ## purpose of game:
-- This kind of game has been said to strengthen the mind and make people smarter
-- it's alos fun!
+- This kind of game has been said to strengthen the mind and make you smarter
+- It's also fun!
 
 ## Tools/Languages
 - Swift
