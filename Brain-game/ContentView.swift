@@ -45,13 +45,13 @@ enum ColorOption{
     }
     
     init() {
-        self = ColorOption.allCases[Int(arc4random_uniform(UInt32(ColorOption.allCases.count))())]
+        self = ColorOption.allCases[Int(arc4random_uniform(UInt32(ColorOption.allCases.count)))]
     }
 }
 
 extension ColorOption: CaseIterable {
     mutating func getRandomColor(){
-        self = ColorOption.allCases[Int(arc4random_uniform(UInt32(ColorOption.allCases.count))())]
+        self = ColorOption.allCases[Int(arc4random_uniform(UInt32(ColorOption.allCases.count)))]
     }
 }
 
