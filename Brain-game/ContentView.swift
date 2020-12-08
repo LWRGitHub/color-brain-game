@@ -55,18 +55,43 @@ extension ColorOption: CaseIterable {
     }
 }
 
+
+
 struct ContentView: View {
     
+    @State var isShowingScoreView = false
     @State var upperColor = ColorOption()
     @State var bottomColor = ColorOption()
     @State var displayColor = ColorOption()
     
+    
     @State var answer: Bool = false
     @State var score: Int = 0
+    @State var timeRemaining = 5
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var body: some View {
-        VStack{
-            Text("Score: \(score)")
+        NavigationView {
+            VStack{
+                NavigationLink(
+                    destination: ScoreView(score: score), isActive: $isShowingScoreView){
+                    EmptyView()
+                }
+            
+            HStack{
+                Text("Timer: \(timeRemaining)sec.")
+                    .padding()
+                    .onReceive(timer) { _ in
+                        if self.timeRemaining > 0 {
+                            self.timeRemaining -= 1
+                        } else {
+                            // time runs out
+                            self.isShowingScoreView = true
+                        }
+                    }
+                Text("Score: \(score)")
+                    .padding()
+            }.frame(minWidth: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/, idealWidth: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/, idealHeight: 50, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
             Text("Does the meaning match the text color?")
                 .padding()
             VStack{
@@ -90,7 +115,7 @@ struct ContentView: View {
                     }) {
                         Text("No")
                             .padding()
-                            .foregroundColor(.white)
+                            .foregroundColor(.red)
                     }
                 }
                 .background(Color(.white))
@@ -102,7 +127,7 @@ struct ContentView: View {
                     }) {
                         Text("Yes")
                             .padding()
-                            .foregroundColor(.white)
+                            .foregroundColor(.red)
                     }
                 }
                 .background(Color(.white))
@@ -110,22 +135,23 @@ struct ContentView: View {
             }.padding()
         }
     }
-    
-    func checkAnswer(){
-        if upperColor == bottomColor && answer{
-            score += 1
-        } else if upperColor != bottomColor && !answer{
-            score += 1
-        }
-        reloadColors()
+}
+
+func checkAnswer(){
+    if upperColor == bottomColor && answer{
+        score += 1
+    } else if upperColor != bottomColor && !answer{
+        score += 1
     }
-    
-    func reloadColors(){
-        upperColor = ColorOption()
-        bottomColor = ColorOption()
-        displayColor = ColorOption()
-    }
-    
+    reloadColors()
+}
+
+func reloadColors(){
+    upperColor = ColorOption()
+    bottomColor = ColorOption()
+    displayColor = ColorOption()
+}
+
 }
 
 struct ContentView_Previews: PreviewProvider {
